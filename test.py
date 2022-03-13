@@ -6,20 +6,20 @@
 
 @Modify Time      @Author    @Version    @Description
 ------------      -------    --------    -----------
-2022/3/10 10:57   lxf        1.0          None
+2022/3/10 10:57   lxf        1.0         测试图片
 """
 
-import torch
-import scipy.misc
 import os
-from PIL import Image, ImageDraw, ImageFont
+
+import torch
+from PIL import Image,ImageDraw
+
 import main as me
-from torchvision import datasets, models, transforms
 
 idx_to_class = me.idx_to_class
 
 
-def predict(model, test_image_name):
+def predict(model,test_image_name):
     transform = me.test_valid_transforms
 
     test_image = Image.open(test_image_name)

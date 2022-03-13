@@ -1,29 +1,35 @@
-# -*- coding:utf-8 -*-
-# @time : 2019.12.02
-# @IDE : pycharm
-# @author : wangzhebufangqi
-# @github : https://github.com/wangzhebufangqi
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+"""
+@File    :   main.py
+@Contact :   niu
 
+@Modify Time      @Author    @Version    @Description
+------------      -------    --------    -----------
+2022/3/10 20:41   lxf        1.0         训练模型
+"""
+import time
+
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
-from torchvision import datasets, models, transforms
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-import time
-import numpy as np
-import matplotlib.pyplot as plt
-import models
+from torchvision import datasets,transforms
+
 import config
+import models
 
 train_transforms = transforms.Compose(
-        [transforms.RandomResizedCrop(size=256, scale=(0.8, 1.0)),#随机裁剪到256*256
-        transforms.RandomRotation(degrees=15),#随机旋转
-        transforms.RandomHorizontalFlip(),#随机水平翻转
-        transforms.CenterCrop(size=224),#中心裁剪到224*224
-        transforms.ToTensor(),#转化成张量
-        transforms.Normalize([0.485, 0.456, 0.406],#归一化
-                             [0.229, 0.224, 0.225])
-])
+    [transforms.RandomResizedCrop(size=256,scale=(0.8,1.0)),  # 随机裁剪到256*256
+     transforms.RandomRotation(degrees=15),  # 随机旋转
+     transforms.RandomHorizontalFlip(),  # 随机水平翻转
+     transforms.CenterCrop(size=224),  # 中心裁剪到224*224
+     transforms.ToTensor(),  # 转化成张量
+     transforms.Normalize([0.485,0.456,0.406],  # 归一化
+                          [0.229,0.224,0.225])
+     ])
 
 test_valid_transforms = transforms.Compose(
         [transforms.Resize(256),
@@ -71,7 +77,7 @@ optimizer = optim.Adam(resnet50.parameters())
 
 
 def train_and_valid(model, loss_function, optimizer, epochs=25):
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")#若有gpu可用则用gpu
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")  # 若有gpu可用则用gpu
     record = []
     best_acc = 0.0
     best_epoch = 0
@@ -139,7 +145,7 @@ def train_and_valid(model, loss_function, optimizer, epochs=25):
 
         record.append([avg_train_loss, avg_valid_loss, avg_train_acc, avg_valid_acc])
 
-        if avg_valid_acc > best_acc  :#记录最高准确性的模型
+        if avg_valid_acc > best_acc:  # 记录最高准确性的模型
             best_acc = avg_valid_acc
             best_epoch = epoch + 1
 
@@ -164,8 +170,6 @@ def train_and_valid(model, loss_function, optimizer, epochs=25):
 
 
 if __name__ == '__main__':
-    print("nciuresh")
-    """
     num_epochs = config.NUM_EPOCHS
     trained_model, record = train_and_valid(resnet50, loss_func, optimizer, num_epochs)
     torch.save(record, config.TRAINED_MODEL)
@@ -186,4 +190,3 @@ if __name__ == '__main__':
     plt.ylim(0, 1)
     plt.savefig('accuracy.png')
     plt.show()
-"""
